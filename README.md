@@ -1,3 +1,5 @@
+![bin-bash logo](https://user-images.githubusercontent.com/7079173/85646214-4a8f0480-b6a4-11ea-978e-290ed4017129.png)
+
 This repo contains an incremental list of useful linux shell commands/scripts for future reference, covering the following tools:
 
 ## Table of Contents
