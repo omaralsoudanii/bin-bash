@@ -66,7 +66,7 @@ This repo contains an incremental list of useful linux shell commands/scripts fo
     -    **<h5>Reload your .bashrc OR .profile file config:</h5>**
             ```bash
             $ source ~/.bashrc
-            bash
+            $ bash
             ```
 
             **Note:** The above steps will run a script that will activate SSH agent every time you acquire a new user session (restart/logout) and opening the terminal for the first time in the current session, which requires root password, so you will see a password prompt to activate. 
