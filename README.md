@@ -1,6 +1,6 @@
 ![bin-bash logo](https://user-images.githubusercontent.com/7079173/85646214-4a8f0480-b6a4-11ea-978e-290ed4017129.png)
 
-This repo contains an incremental list of useful linux shell commands/scripts for future reference, covering the following tools:
+This repo contains an incremental list of useful linux shell commands/scripts for future reference, covering the following tools:**
 
 ## Table of Contents
 - [General](#General)
@@ -11,48 +11,48 @@ This repo contains an incremental list of useful linux shell commands/scripts fo
 
 ## General
 
-- Find out how many lines a file contains a phrase:
+- **Find out how many lines a file contains a phrase:**
     ```bash
     cat /var/log/app.log.2 | grep "api/users" | wc -l
     ```
 
-- Check all mounted hard drives disk usage size:
+- **Check all mounted hard drives disk usage size:**
     ```bash
     df -h
     ```
 
-- Check current directory disk usage size:
+- **Check current directory disk usage size:**
     ```bash
     du -sh *
     ```
-- Tail all incoming new lines for log file(s):
+- **Tail all incoming new lines for log file(s):**
     ```bash
     tail -f -n0 *-error_logs.log
     ```
     
-- Find if file(s) exists in the current directory/sub-directories, and list found file(s) locations:
+- **Find if file(s) exists in the current directory/sub-directories, and list found file(s) locations:**
     ```bash
     find . -name "*-logs.json" | xargs ls -lh
     ```
     **This needs sudo to look in directories that requires root permission, it will also list of all files and directories in the current directory if it finds nothing.**
 
-- Find if process(es) are currently running, and list process(es) details (parent/child) if found:
+- **Find if process(es) are currently running, and list process(es) details (parent/child) if found:**
     ```bash
     ps aux | grep mysql
     ```
 
-- Start/Restart a service with a different user:
+- **Start/Restart a service with a different user:**
     ```bash
     sudo -u www-data service nginx start
     sudo -u omar service netdata restart
     ```
 
-- Add a script that automatically activates SSH agent on the shell startup for new user sessions:
-    1.    Edit your **.bashrc** OR **.profile** file (depending on your distro, but it is probably .bashrc):
+- **Add a script that automatically activates SSH agent on the shell startup for new user sessions:**
+    1.    ***Edit your **.bashrc** OR **.profile** file (depending on your distro, but it is probably .bashrc):***
             ```bash
             sudo nano ~/.bashrc
             ```
-    2.    Add the following lines at the bottom of the file:
+    2.    ***Add the following lines at the bottom of the file:***
             ```bashell
             if [ ! -S ~/.ssh/ssh_auth_sock ]; then
               eval `ssh-agent`
@@ -61,98 +61,98 @@ This repo contains an incremental list of useful linux shell commands/scripts fo
             export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
             ssh-add -l > /dev/null || ssh-add
             ```
-    3.    Reload your **.bashrc** OR **.profile** file config:
+    3.    ***Reload your **.bashrc** OR **.profile** file config:***
             ```bash
             source ~/.bashrc
             bash
             ```
             
-  The above steps will run a script that will activate SSH agent every time you acquire a new user session (restart/logout) and opening the terminal for the first time in the current session, which requires root password, so you will see a password prompt to activate. 
+  **Note:** The above steps will run a script that will activate SSH agent every time you acquire a new user session (restart/logout) and opening the terminal for the first time in the current session, which requires root password, so you will see a password prompt to activate. 
   After entering your root password you can SSH into any server you have access to, without the need to enter your credentials every time.
 
 ## Docker
 
-- Build a docker compose file images and run their containers assuming default compose file name (docker-compose.yml):
+- **Build a docker compose file images and run their containers assuming default compose file name (docker-compose.yml):**
     ```bash
     docker-compose up  --build -d
     ```
 
-- Build a docker compose file images and run their containers found in the specified path:
+- **Build a docker compose file images and run their containers found in the specified path:**
     ```bash
     docker-compose  -f docker-compose.development.yml up  --build -d
     ```
 
-- Build a docker compose file images and run their containers while ignoring pre images cache (useful for multi-stage builds):
+- **Build a docker compose file images and run their containers while ignoring pre images cache (useful for multi-stage builds):**
     ```bash
     docker-compose build  --no-cache
     ```
 
-- Execute a command from a container:
+- **Execute a command from a container:**
     ```bash
     docker exec -it node_app npm install
     ```
 
-- Export MySQL database from a container to a directory using mysqldump and execute command:
-    1.    Full database structure and data: 
+- **Export MySQL database from a container to a directory using mysqldump and execute command:**
+    1.    ***Full database structure and data:***
             ```bash
             docker exec -i app_mysql-server-57_1 mysqldump -uroot -proot --databases mydb_name --skip-comments > /Documents/db.sql
             ```
-    2.    Specified table structure and data: 
+    2.    ***Specified table structure and data:*** 
             ```bash
             docker exec -i app_mysql-server-57_1 mysqldump -uroot -proot mydb_name mytable_name > /Documents/db.sql
             ```
-    3.    Specific table structure and data that matches a where clause: 
+    3.    ***Specific table structure and data that matches a where clause:*** 
             ```bash
             docker exec app_mysql mysqldump -uroot -proot mydb_name --tables mytable_name --where="id>5 limit 5000000" > mytable_name.sql
             ```
     
-- SSH into a container using execute command:
-    1.    For alpine images, only **sh** is available: 
+- **SSH into a container using execute command:**
+    1.    ***For alpine images, only **sh** is available:*** 
             ```bash
             docker exec -it app_server sh
             ```
-    2.    For other images, **bash** is available: 
+    2.    ***For other images, **bash** is available:***
             ```bash
             docker exec -it app_server bash
             ```
 
-- Preview a docker compose file configuration found in the specified path:
+- **Preview a docker compose file configuration found in the specified path:**
     ```bash
     docker-compose -f docker-compose.development.yml config
     ```
 
-- Delete all stopped containers and images and non persistent volumes and their networks:
+- **Delete all stopped containers and unused images/networks/volumes and non persistent volumes and their networks:**
     ```bash
     docker system prune -a
     ```
-    **BEWARE THAT ALL STOPPED CONTAINERS DATA WILL BE DELETED**
+    **Note:** Beware that all stopped containers, and unused images/networks/volumes will be deleted.
 
-- Delete all unused networks:
+- **Delete all unused networks:**
     ```bash
     docker network prune
     ```
 
-- Delete all unused volumes:
+- **Delete all unused volumes:**
     ```bash
     docker volume ls -qf dangling=true | xargs -r docker volume rm
     ```
 
-- Tail container logs:
+- **Tail container logs:**
     ```bash
     docker logs --tail 100 -f app_server
     ```
 
-- Tail container logs, and find lines that contains a phrase and print the containing line, 3 lines before it and 3 lines after it:
+- **Tail container logs, and find lines that contains a phrase and print the containing line, 3 lines before it and 3 lines after it:**
     ```bash
     docker logs -f --tail 10000  app_server | grep -B3 -A3 "api/users"
     ```
 
-- System wide information for Docker:
+- **System wide information for Docker:**
     ```bash
     docker system info
     ```
 
-- Docker disk usage info for the whole machine (detailed and non detailed):
+- **Docker disk usage info for the whole machine (detailed and non detailed):**
     ```bash
     docker system df -v
     ```
@@ -162,26 +162,26 @@ This repo contains an incremental list of useful linux shell commands/scripts fo
 
 ## MySQL
 
-- Export MySQL database to a directory using mysqldump:
-    1.    Full database structure and data: 
+- **Export MySQL database to a directory using mysqldump:**
+    1.    ***Full database structure and data:*** 
             ```bash
             mysqldump -uroot -proot --databases mydb_name --skip-comments > /Documents/db.sql
             ```
-    2.    Specified table structure and data: 
+    2.    ***Specified table structure and data:*** 
             ```bash
             mysqldump -uroot -proot mydb_name mytable_name > /Documents/db.sql
             ```
-    3.    A specific table structure and data that matches a where clause: 
+    3.    ***A specific table structure and data that matches a where clause:*** 
             ```bash
             mysqldump -uroot -proot mydb_name --tables mytable_name --where="id>5 limit 5000000" > mytable_name.sql
             ```
 
-- Change MySQL CLI pager to **less** for more readability when viewing large sets of data from queries in the terminal (use this when you are inside mysql shell i.e: after using **mysql** command):
+- **Change MySQL CLI pager to **less** for more readability when viewing large sets of data from queries in the terminal (use this when you are inside mysql shell i.e: after using **mysql** command):**
     ```bash
     pager less -R -S
     ```
 
-- Enable and use profiling in the current mysql session for debugging and tuning queries performance:
+- **Enable and use profiling in the current mysql session for debugging and tuning queries performance:**
     ```sql
     SET profiling = 1;
     select * from table_name where field_name like '%omar%';
@@ -192,50 +192,50 @@ This repo contains an incremental list of useful linux shell commands/scripts fo
 
 ## MongoDB
 
-- Show all databases:
+- **Show all databases:**
     ```json
     show dbs
     ```
 
-- Select a databases to work on:
+- **Select a databases to work on:**
     ```json
     use mydb_name
     ```
 
-- Show all collections for a selected database:
+- **Show all collections for a selected database:**
     ```json
     show collections
     ```
 
-- Create a new collection in a selected database:
+- **Create a new collection in a selected database:**
     ```json
     db.createCollection("collection_name")
     ```
 
-- Get all indexes for a collection:
+- **Get all indexes for a collection:**
     ```json
     db.collection_name.getIndexes()
     ```
 
-- Create a new index on a field in a collection:
+- **Create a new index on a field in a collection:**
     ```json
     db.collection_name.createIndex({field_name:1})
     ```
 
-- Drop an index from a field in a collection:
+- **Drop an index from a field in a collection:**
     ```json
     db.collection_name.dropIndex({field_name:1})
     ```
 
 ## PHP
 
-- Run a script using specific PHP version, and passing environment variables to the script:
+- **Run a script using specific PHP version, and passing environment variables to the script:**
     ```bash
     WEBSITE=www.reddit.com ENVIROMENT=development  /usr/bin/php7.4 -f /var/www/swoole/server.php 
     ```
     
-- Enable/Disable PHP modules for a specific PHP version (needs root permission for basic modules):
-    1.    Enable: 
+- **Enable/Disable PHP modules for a specific PHP version (needs root permission for basic modules):**
+    1.    ***Enable:***
             ```bash
             sudo phpenmod -v 7.4 xdebug
             ```
@@ -243,7 +243,7 @@ This repo contains an incremental list of useful linux shell commands/scripts fo
             ```bash
             sudo phpdismod -v 7.4 curl
             ```
-- Check the PHP settings of your installed version (In case you are using multiple PHP versions on the same machine, use ```which php``` and ```php -v``` to find the used version and its binary location):
+- **Check the PHP settings of your installed version (In case you are using multiple PHP versions on the same machine, use ```which php``` and ```php -v``` to find the used version and its binary location):**
     ```bash
     php -i
     php -i | grep "error_reporting"
