@@ -16,6 +16,24 @@ This repo contains an incremental list of useful linux shell commands/scripts fo
     $ cat /var/log/app.log.2 | grep "api/users" | wc -l
     ```
 
+- **<h4>Curl a request with form-data `HTTP2` and get some speed info:</h4>**
+    ```bash
+    $ curl -w '\nEstablish Connection: %{time_connect}s\nTTFB: %{time_starttransfer}s\n
+      Total: %{time_total}s\nUpload speed: %{speed_upload}s\n' 
+      --http2 --location --request POST 'https://www.somedomain.com/uploadfile' 
+      --header 'Authorization: Bearer HwzQAS323DvAGQ23123' --form 'file=@/home/some_file.csv'
+      --form 'file=@/home/another_file.csv'
+    ```
+  
+- **<h4>Curl a request form-data with `HTTP1.1` and get some speed info:</h4>**
+    ```bash
+    $ curl -w '\nEstablish Connection: %{time_connect}s\nTTFB: %{time_starttransfer}s\n
+      Total: %{time_total}s\nUpload speed: %{speed_upload}s\n' 
+      --http1.1 --location --request POST 'https://www.somedomain.com/uploadfile' 
+      --header 'Authorization: Bearer HwzQAS323DvAGQ23123' --form 'file=@/home/some_file.csv'
+      --form 'file=@/home/another_file.csv'
+    ```
+
 - **<h4>Check all mounted hard drives disk usage size:</h4>**
     ```bash
     $ df -h
