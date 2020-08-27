@@ -24,7 +24,11 @@ This repo contains an incremental list of useful linux shell commands/scripts fo
       --header 'Authorization: Bearer HwzQAS323DvAGQ23123' --form 'file=@/home/some_file.csv' \
       --form 'file=@/home/another_file.csv'
     ```
-  
+- **<h4>Check network speed of the host you are in:</h4>**
+    ```bash
+    $ sudo ln -s /usr/bin/python3 /usr/bin/python
+    $ curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -
+    ```
 - **<h4>Curl a request form-data with `HTTP1.1` and get some speed info:</h4>**
     ```bash
     $ curl -w '\nEstablish Connection: %{time_connect}s\nTTFB: %{time_starttransfer}s\n \
